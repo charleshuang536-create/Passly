@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Palette, Settings, Shield } from 'lucide-react';
+import { Bell, Palette, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -8,35 +8,29 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { showSuccess } from '@/utils/toast';
 
-const SettingsDialog = () => {
+interface SettingsDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const [notifications, setNotifications] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [privatePreview, setPrivatePreview] = useState(true);
 
   const handleSave = () => {
     showSuccess('Settings saved.');
+    onOpenChange(false);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="hidden rounded-full border border-border/60 bg-background/60 sm:inline-flex"
-          aria-label="Settings"
-        >
-          <Settings className="h-4 w-4" />
-        </Button>
-      </DialogTrigger>
-
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] max-w-3xl overflow-hidden rounded-[2rem] border-border/70 p-0">
         <div className="max-h-[85vh] overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
           <DialogHeader className="mb-8 space-y-3 text-left">
