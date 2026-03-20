@@ -166,7 +166,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                       className="grid gap-2 overflow-hidden"
                     >
                       <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 space-y-2">
-                        <Label htmlFor="customType" className="text-xs text-primary font-bold uppercase tracking-wider">Custom Category Name</Label>
+                        <Label htmlFor="customType" className="text-xs text-primary font-bold uppercase tracking-wider">Custom Pass Type</Label>
                         <Input 
                           id="customType" 
                           placeholder="e.g. Library Card" 
