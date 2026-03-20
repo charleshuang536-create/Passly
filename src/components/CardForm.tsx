@@ -150,7 +150,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                       initial={{ opacity: 0, height: 0, marginTop: 0 }}
                       animate={{ opacity: 1, height: 'auto', marginTop: 8 }}
                       exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                      className="grid gap-2 overflow-hidden"
+                      className="flex flex-col items-center gap-2 overflow-hidden"
                     >
                       <Label htmlFor="customType">Custom Pass Type</Label>
                       <Input 
@@ -158,7 +158,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                         placeholder="e.g. Library Card" 
                         value={data.type}
                         onChange={(e) => onChange('type', e.target.value)}
-                        className="rounded-xl max-w-[240px]"
+                        className="rounded-xl max-w-[240px] text-center"
                       />
                     </motion.div>
                   )}
