@@ -6,7 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wallet, ScanLine, Info, Palette, Database, Dumbbell, ShoppingBag, Ticket, Star, QrCode, Wifi } from 'lucide-react';
+import { Slider } from "@/components/ui/slider";
+import { 
+  Wallet, ScanLine, Info, Palette, Database, 
+  Dumbbell, ShoppingBag, Ticket, Star, 
+  Layout as LayoutIcon, Settings2, Plus, Trash2 
+} from 'lucide-react';
 import { showSuccess } from '@/utils/toast';
 import NFCScanner from './NFCScanner';
 
@@ -20,7 +25,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess(`Pass generated with ${data.techType.toUpperCase()}! Ready for Apple Wallet.`);
+    showSuccess(`Pass generated with custom configuration! Ready for Apple Wallet.`);
   };
 
   const handleScanComplete = (scannedData: any) => {
@@ -29,6 +34,22 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
     onChange('payload', scannedData.payload);
     onChange('color', scannedData.color);
     showSuccess("Card data imported successfully!");
+  };
+
+  const addField = () => {
+    const newFields = [...data.customFields, { label: 'New Field', value: 'Value' }];
+    onChange('customFields', newFields);
+  };
+
+  const removeField = (index: number) => {
+    const newFields = data.customFields.filter((_: any, i: number) => i !== index);
+    onChange('customFields', newFields);
+  };
+
+  const updateField = (index: number, key: 'label' | 'value', val: string) => {
+    const newFields = [...data.customFields];
+    newFields[index][key] = val;
+    onChange('customFields', newFields);
   };
 
   const colors = [
@@ -66,19 +87,23 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
       <div className="bg-card rounded-3xl border border-border shadow-sm overflow-hidden">
         <Tabs defaultValue="data" className="w-full">
-          <TabsList className="w-full h-14 rounded-none border-b bg-muted/20 p-0">
-            <TabsTrigger value="data" className="flex-1 h-full gap-2 data-[state=active]:bg-background rounded-none border-r">
-              <Database className="w-4 h-4" />
-              Card Data
+          <TabsList className="w-full h-12 rounded-none border-b bg-muted/20 p-0 flex overflow-x-auto scrollbar-hide">
+            <TabsTrigger value="data" className="flex-1 h-full gap-2 data-[state=active]:bg-background rounded-none border-r text-xs">
+              <Database className="w-3 h-3" /> Data
             </TabsTrigger>
-            <TabsTrigger value="design" className="flex-1 h-full gap-2 data-[state=active]:bg-background rounded-none">
-              <Palette className="w-4 h-4" />
-              Appearance
+            <TabsTrigger value="design" className="flex-1 h-full gap-2 data-[state=active]:bg-background rounded-none border-r text-xs">
+              <Palette className="w-3 h-3" /> Style
+            </TabsTrigger>
+            <TabsTrigger value="layout" className="flex-1 h-full gap-2 data-[state=active]:bg-background rounded-none border-r text-xs">
+              <LayoutIcon className="w-3 h-3" /> Layout
+            </TabsTrigger>
+            <TabsTrigger value="advanced" className="flex-1 h-full gap-2 data-[state=active]:bg-background rounded-none text-xs">
+              <Settings2 className="w-3 h-3" /> Extra
             </TabsTrigger>
           </TabsList>
 
           <form onSubmit={handleSubmit}>
-            <TabsContent value="data" className="p-8 space-y-6 mt-0">
+            <TabsContent value="data" className="p-6 space-y-6 mt-0">
               <div className="space-y-4">
                 <div className="grid gap-2">
                   <Label htmlFor="label">Pass Label</Label>
@@ -120,12 +145,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
                 {data.techType === 'nfc' ? (
                   <div className="grid gap-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="payload" className="flex items-center gap-1.5">
-                        NFC Payload
-                        <Info className="w-3 h-3 text-muted-foreground" />
-                      </Label>
-                    </div>
+                    <Label htmlFor="payload">NFC Payload</Label>
                     <Input 
                       id="payload" 
                       placeholder="Data sent to NFC reader" 
@@ -136,12 +156,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                   </div>
                 ) : (
                   <div className="grid gap-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="qrContent" className="flex items-center gap-1.5">
-                        QR Code Content
-                        <Info className="w-3 h-3 text-muted-foreground" />
-                      </Label>
-                    </div>
+                    <Label htmlFor="qrContent">QR Code Content</Label>
                     <Input 
                       id="qrContent" 
                       placeholder="URL or text for QR code" 
@@ -154,17 +169,17 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
               </div>
             </TabsContent>
 
-            <TabsContent value="design" className="p-8 space-y-6 mt-0">
+            <TabsContent value="design" className="p-6 space-y-6 mt-0">
               <div className="space-y-6">
                 <div className="grid gap-3">
-                  <Label>Card Color</Label>
-                  <div className="flex flex-wrap gap-3">
+                  <Label>Primary Color</Label>
+                  <div className="flex flex-wrap gap-2">
                     {colors.map((c) => (
                       <button
                         key={c.value}
                         type="button"
                         onClick={() => onChange('color', c.value)}
-                        className={`w-8 h-8 rounded-full border-2 transition-all ${data.color === c.value ? 'border-primary scale-125 ring-2 ring-primary/20' : 'border-transparent hover:scale-110'}`}
+                        className={`w-7 h-7 rounded-full border-2 transition-all ${data.color === c.value ? 'border-primary scale-110 ring-2 ring-primary/20' : 'border-transparent hover:scale-105'}`}
                         style={{ backgroundColor: c.value }}
                       />
                     ))}
@@ -175,20 +190,16 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                   <div className="grid gap-2">
                     <Label>Text Color</Label>
                     <div className="flex gap-2 p-1 bg-muted rounded-lg">
-                      <button
-                        type="button"
-                        onClick={() => onChange('textColor', '#ffffff')}
-                        className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${data.textColor === '#ffffff' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
-                      >
-                        White
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => onChange('textColor', '#000000')}
-                        className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${data.textColor === '#000000' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
-                      >
-                        Black
-                      </button>
+                      {['#ffffff', '#000000'].map((c) => (
+                        <button
+                          key={c}
+                          type="button"
+                          onClick={() => onChange('textColor', c)}
+                          className={`flex-1 py-1 text-xs font-medium rounded-md transition-all ${data.textColor === c ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+                        >
+                          {c === '#ffffff' ? 'White' : 'Black'}
+                        </button>
+                      ))}
                     </div>
                   </div>
                   <div className="grid gap-2">
@@ -204,6 +215,55 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid gap-2">
+                    <div className="flex justify-between">
+                      <Label>Corner Radius</Label>
+                      <span className="text-xs text-muted-foreground">{data.borderRadius}px</span>
+                    </div>
+                    <Slider 
+                      value={[data.borderRadius]} 
+                      onValueChange={([v]) => onChange('borderRadius', v)} 
+                      max={40} 
+                      step={1} 
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="flex justify-between">
+                      <Label>Border Width</Label>
+                      <span className="text-xs text-muted-foreground">{data.borderWidth}px</span>
+                    </div>
+                    <Slider 
+                      value={[data.borderWidth]} 
+                      onValueChange={([v]) => onChange('borderWidth', v)} 
+                      max={8} 
+                      step={1} 
+                    />
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="layout" className="p-6 space-y-6 mt-0">
+              <div className="grid gap-4">
+                <Label>Card Layout</Label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { id: 'standard', label: 'Standard' },
+                    { id: 'compact', label: 'Compact' },
+                    { id: 'minimal', label: 'Minimal' }
+                  ].map((l) => (
+                    <button
+                      key={l.id}
+                      type="button"
+                      onClick={() => onChange('layout', l.id)}
+                      className={`p-3 rounded-xl border text-xs font-medium transition-all ${data.layout === l.id ? 'bg-primary text-primary-foreground border-primary shadow-md' : 'bg-background hover:bg-muted'}`}
+                    >
+                      {l.label}
+                    </button>
+                  ))}
                 </div>
 
                 <div className="grid gap-3">
@@ -224,7 +284,53 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
               </div>
             </TabsContent>
 
-            <div className="p-8 pt-0">
+            <TabsContent value="advanced" className="p-6 space-y-6 mt-0">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label>Custom Fields</Label>
+                  <Button type="button" variant="ghost" size="sm" onClick={addField} className="h-8 gap-1 text-xs">
+                    <Plus className="w-3 h-3" /> Add Field
+                  </Button>
+                </div>
+                
+                <div className="space-y-3">
+                  {data.customFields.map((field: any, i: number) => (
+                    <div key={i} className="flex gap-2 items-start">
+                      <div className="grid gap-1 flex-1">
+                        <Input 
+                          placeholder="Label" 
+                          value={field.label} 
+                          onChange={(e) => updateField(i, 'label', e.target.value)}
+                          className="h-8 text-xs rounded-lg"
+                        />
+                        <Input 
+                          placeholder="Value" 
+                          value={field.value} 
+                          onChange={(e) => updateField(i, 'value', e.target.value)}
+                          className="h-8 text-xs rounded-lg"
+                        />
+                      </div>
+                      <Button 
+                        type="button" 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => removeField(i)}
+                        className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  ))}
+                  {data.customFields.length === 0 && (
+                    <p className="text-xs text-center text-muted-foreground py-4 border border-dashed rounded-xl">
+                      No custom fields added yet.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+
+            <div className="p-6 pt-0">
               <Button type="submit" className="w-full h-12 rounded-xl gap-2 text-lg font-semibold">
                 <Wallet className="w-5 h-5" />
                 Add to Apple Wallet

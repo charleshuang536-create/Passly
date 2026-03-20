@@ -15,13 +15,19 @@ const Create = () => {
     name: '',
     color: '#2563eb',
     textColor: '#ffffff',
+    secondaryColor: '#ffffff',
+    borderColor: '#ffffff',
+    borderWidth: 0,
+    borderRadius: 16,
     id: '',
     type: 'Membership',
     payload: '',
     qrContent: '',
     finish: 'standard',
     icon: 'star',
-    techType: 'nfc' as 'nfc' | 'qr'
+    techType: 'nfc' as 'nfc' | 'qr',
+    layout: 'standard' as 'standard' | 'compact' | 'minimal',
+    customFields: [] as Array<{ label: string; value: string }>
   });
 
   const handleUpdate = (field: string, value: any) => {
