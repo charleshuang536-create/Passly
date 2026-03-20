@@ -55,7 +55,7 @@ const Create = () => {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="max-w-2xl mx-auto text-center"
               >
-                <h1 className="text-4xl font-bold mb-4">Choose Technology</h1>
+                <h1 className="text-4xl font-bold mb-4">Choose Type</h1>
                 <p className="text-muted-foreground mb-12">Select how your digital pass will be scanned at terminals.</p>
                 
                 <div className="grid sm:grid-cols-2 gap-6">
