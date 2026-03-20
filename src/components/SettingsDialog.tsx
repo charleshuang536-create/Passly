@@ -1,13 +1,21 @@
-import Navbar from '@/components/Navbar';
+import { useState } from 'react';
+import { Bell, Palette, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { showSuccess } from '@/utils/toast';
-import { Bell, Palette, Shield } from 'lucide-react';
-import { useState } from 'react';
 
-const Settings = () => {
+const SettingsDialog = () => {
   const [notifications, setNotifications] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [privatePreview, setPrivatePreview] = useState(true);
@@ -17,18 +25,27 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hidden rounded-full border border-border/60 bg-background/60 sm:inline-flex"
+          aria-label="Settings"
+        >
+          <Settings className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
 
-      <main className="container mx-auto px-4 pb-20 pt-32">
-        <div className="mx-auto max-w-3xl space-y-8">
-          <div className="space-y-3 text-center md:text-left">
+      <DialogContent className="max-h-[85vh] max-w-3xl overflow-hidden rounded-[2rem] border-border/70 p-0">
+        <div className="max-h-[85vh] overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
+          <DialogHeader className="mb-8 space-y-3 text-left">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">Preferences</p>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground">Settings</h1>
-            <p className="max-w-2xl text-muted-foreground">
+            <DialogTitle className="text-4xl font-bold tracking-tight">Settings</DialogTitle>
+            <DialogDescription className="max-w-2xl text-base">
               Manage the way your pass builder feels and behaves.
-            </p>
-          </div>
+            </DialogDescription>
+          </DialogHeader>
 
           <div className="space-y-5">
             <Card className="rounded-[2rem] border-border/70 shadow-sm">
@@ -43,7 +60,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-muted/30 px-4 py-4">
-                  <div className="space-y-1">
+                  <div className="space-y-1 pr-4">
                     <Label htmlFor="notifications">Project notifications</Label>
                     <p className="text-sm text-muted-foreground">Receive updates about saved passes and product changes.</p>
                   </div>
@@ -64,7 +81,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-muted/30 px-4 py-4">
-                  <div className="space-y-1">
+                  <div className="space-y-1 pr-4">
                     <Label htmlFor="reducedMotion">Reduced motion</Label>
                     <p className="text-sm text-muted-foreground">Use gentler transitions while editing your pass.</p>
                   </div>
@@ -85,7 +102,7 @@ const Settings = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-muted/30 px-4 py-4">
-                  <div className="space-y-1">
+                  <div className="space-y-1 pr-4">
                     <Label htmlFor="privatePreview">Private preview mode</Label>
                     <p className="text-sm text-muted-foreground">Keep sensitive card details masked in previews by default.</p>
                   </div>
@@ -95,15 +112,15 @@ const Settings = () => {
             </Card>
           </div>
 
-          <div className="flex justify-end">
+          <DialogFooter className="mt-8">
             <Button onClick={handleSave} className="rounded-full px-6">
               Save settings
             </Button>
-          </div>
+          </DialogFooter>
         </div>
-      </main>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default Settings;
+export default SettingsDialog;

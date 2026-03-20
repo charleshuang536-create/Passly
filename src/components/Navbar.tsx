@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Settings, Wallet, PlusCircle } from 'lucide-react';
+import { Wallet, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import SettingsDialog from '@/components/SettingsDialog';
 
 const Navbar = () => {
   return (
@@ -17,16 +18,7 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-3">
-          <Link to="/settings">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hidden rounded-full border border-border/60 bg-background/60 sm:inline-flex"
-              aria-label="Settings"
-            >
-              <Settings className="h-4 w-4" />
-            </Button>
-          </Link>
+          <SettingsDialog />
           <Link to="/create">
             <Button variant="ghost" className="hidden sm:flex">
               My Passes
