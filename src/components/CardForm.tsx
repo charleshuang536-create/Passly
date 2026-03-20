@@ -158,7 +158,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                         placeholder="e.g. Library Card" 
                         value={data.type}
                         onChange={(e) => onChange('type', e.target.value)}
-                        className="rounded-xl"
+                        className="rounded-xl max-w-[240px]"
                       />
                     </motion.div>
                   )}
