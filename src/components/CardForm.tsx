@@ -6,13 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Wallet, ScanLine, Info, Palette, Database, Dumbbell, ShoppingBag, Ticket, Star } from 'lucide-react';
+import { Wallet, ScanLine, Info, Palette, Database, Dumbbell, ShoppingBag, Ticket, Star, QrCode, Wifi } from 'lucide-react';
 import { showSuccess } from '@/utils/toast';
 import NFCScanner from './NFCScanner';
 
 interface CardFormProps {
   data: any;
-  onChange: (field: string, value: string) => void;
+  onChange: (field: string, value: any) => void;
 }
 
 const CardForm = ({ data, onChange }: CardFormProps) => {
@@ -20,7 +20,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess("Pass generated with custom design! Ready for Apple Wallet.");
+    showSuccess(`Pass generated with ${data.techType.toUpperCase()}! Ready for Apple Wallet.`);
   };
 
   const handleScanComplete = (scannedData: any) => {
@@ -52,15 +52,17 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
   return (
     <div className="space-y-6">
-      <Button 
-        type="button" 
-        variant="outline" 
-        className="w-full h-14 rounded-2xl border-dashed border-2 gap-3 hover:bg-primary/5 hover:border-primary transition-all"
-        onClick={() => setIsScannerOpen(true)}
-      >
-        <ScanLine className="w-5 h-5 text-primary" />
-        Scan Physical NFC Card
-      </Button>
+      {data.techType === 'nfc' && (
+        <Button 
+          type="button" 
+          variant="outline" 
+          className="w-full h-14 rounded-2xl border-dashed border-2 gap-3 hover:bg-primary/5 hover:border-primary transition-all"
+          onClick={() => setIsScannerOpen(true)}
+        >
+          <ScanLine className="w-5 h-5 text-primary" />
+          Scan Physical NFC Card
+        </Button>
+      )}
 
       <div className="bg-card rounded-3xl border border-border shadow-sm overflow-hidden">
         <Tabs defaultValue="data" className="w-full">
@@ -116,21 +118,39 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                   </div>
                 </div>
 
-                <div className="grid gap-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="payload" className="flex items-center gap-1.5">
-                      NFC Payload
-                      <Info className="w-3 h-3 text-muted-foreground" />
-                    </Label>
+                {data.techType === 'nfc' ? (
+                  <div className="grid gap-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="payload" className="flex items-center gap-1.5">
+                        NFC Payload
+                        <Info className="w-3 h-3 text-muted-foreground" />
+                      </Label>
+                    </div>
+                    <Input 
+                      id="payload" 
+                      placeholder="Data sent to NFC reader" 
+                      value={data.payload || ''}
+                      onChange={(e) => onChange('payload', e.target.value)}
+                      className="rounded-xl font-mono text-sm bg-muted/30"
+                    />
                   </div>
-                  <Input 
-                    id="payload" 
-                    placeholder="Data sent to NFC reader" 
-                    value={data.payload || ''}
-                    onChange={(e) => onChange('payload', e.target.value)}
-                    className="rounded-xl font-mono text-sm bg-muted/30"
-                  />
-                </div>
+                ) : (
+                  <div className="grid gap-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="qrContent" className="flex items-center gap-1.5">
+                        QR Code Content
+                        <Info className="w-3 h-3 text-muted-foreground" />
+                      </Label>
+                    </div>
+                    <Input 
+                      id="qrContent" 
+                      placeholder="URL or text for QR code" 
+                      value={data.qrContent || ''}
+                      onChange={(e) => onChange('qrContent', e.target.value)}
+                      className="rounded-xl font-mono text-sm bg-muted/30"
+                    />
+                  </div>
+                )}
               </div>
             </TabsContent>
 

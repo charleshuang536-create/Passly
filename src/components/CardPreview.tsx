@@ -1,8 +1,9 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Smartphone, Wifi, Zap, Dumbbell, ShoppingBag, Ticket, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Smartphone, Wifi, Zap, Dumbbell, ShoppingBag, Ticket, Star, QrCode } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 interface CardPreviewProps {
   data: {
@@ -15,6 +16,8 @@ interface CardPreviewProps {
     payload?: string;
     finish: string;
     icon: string;
+    techType: 'nfc' | 'qr';
+    qrContent: string;
   };
 }
 
@@ -60,27 +63,62 @@ const CardPreview = ({ data }: CardPreviewProps) => {
               <div className="text-lg font-bold leading-tight">{data.label || 'My New Pass'}</div>
             </div>
           </div>
+          
           <div className="flex flex-col items-end gap-2">
-            <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-              <Wifi className="w-5 h-5 rotate-90" />
-            </div>
-            {data.payload && (
-              <div className="bg-yellow-400/20 p-1 rounded-md backdrop-blur-sm border border-yellow-400/30">
-                <Zap className="w-3 h-3 text-yellow-400" />
+            {data.techType === 'nfc' ? (
+              <>
+                <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+                  <Wifi className="w-5 h-5 rotate-90" />
+                </div>
+                {data.payload && (
+                  <div className="bg-yellow-400/20 p-1 rounded-md backdrop-blur-sm border border-yellow-400/30">
+                    <Zap className="w-3 h-3 text-yellow-400" />
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+                <QrCode className="w-5 h-5" />
               </div>
             )}
           </div>
         </div>
 
         <div className="flex justify-between items-end relative z-10">
-          <div>
+          <div className="flex-1">
             <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Card Holder</div>
-            <div className="font-medium">{data.name || 'Your Name'}</div>
+            <div className="font-medium truncate max-w-[120px]">{data.name || 'Your Name'}</div>
           </div>
-          <div className="text-right">
-            <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Serial Number</div>
-            <div className="font-mono text-sm">{data.id || '•••• ••••'}</div>
-          </div>
+          
+          <AnimatePresence mode="wait">
+            {data.techType === 'qr' ? (
+              <motion.div 
+                key="qr"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="bg-white p-1.5 rounded-lg shadow-lg"
+              >
+                <QRCodeSVG 
+                  value={data.qrContent || 'https://passly.app'} 
+                  size={64}
+                  level="M"
+                  includeMargin={false}
+                />
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="serial"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="text-right"
+              >
+                <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Serial Number</div>
+                <div className="font-mono text-sm">{data.id || '•••• ••••'}</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
 
