@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Wallet, ScanLine, Info, Palette, Database, 
   Dumbbell, ShoppingBag, Ticket, Star, 
@@ -23,6 +24,8 @@ interface CardFormProps {
 
 const CardForm = ({ data, onChange }: CardFormProps) => {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const defaultTypes = ['Store Card', 'Membership', 'Event Ticket', 'Coupon'];
+  const isCustomType = !defaultTypes.includes(data.type) && data.type !== '';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,15 +111,24 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <Label htmlFor="type">Pass Type</Label>
-                    <Select value={data.type} onValueChange={(v) => onChange('type', v)}>
+                    <Select 
+                      value={isCustomType ? "custom" : data.type} 
+                      onValueChange={(v) => {
+                        if (v === 'custom') {
+                          onChange('type', 'Custom Type');
+                        } else {
+                          onChange('type', v);
+                        }
+                      }}
+                    >
                       <SelectTrigger className="rounded-xl">
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Store Card">Store Card</SelectItem>
-                        <SelectItem value="Membership">Membership</SelectItem>
-                        <SelectItem value="Event Ticket">Event Ticket</SelectItem>
-                        <SelectItem value="Coupon">Coupon</SelectItem>
+                        {defaultTypes.map(t => (
+                          <SelectItem key={t} value={t}>{t}</SelectItem>
+                        ))}
+                        <SelectItem value="custom">Custom...</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -131,6 +143,26 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                     />
                   </div>
                 </div>
+
+                <AnimatePresence>
+                  {isCustomType && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                      animate={{ opacity: 1, height: 'auto', marginTop: 8 }}
+                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                      className="grid gap-2 overflow-hidden"
+                    >
+                      <Label htmlFor="customType">Custom Pass Type</Label>
+                      <Input 
+                        id="customType" 
+                        placeholder="e.g. Library Card" 
+                        value={data.type}
+                        onChange={(e) => onChange('type', e.target.value)}
+                        className="rounded-xl"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {data.techType === 'nfc' ? (
                   <div className="grid gap-2">
