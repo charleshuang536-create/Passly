@@ -11,9 +11,12 @@ const Create = () => {
     label: '',
     name: '',
     color: '#2563eb',
+    textColor: '#ffffff',
     id: '',
     type: 'Membership',
-    payload: ''
+    payload: '',
+    finish: 'standard',
+    icon: 'star'
   });
 
   const handleUpdate = (field: string, value: string) => {
@@ -28,7 +31,7 @@ const Create = () => {
         <div className="max-w-5xl mx-auto">
           <div className="mb-12 text-center md:text-left">
             <h1 className="text-4xl font-bold mb-2">Digitize Your Card</h1>
-            <p className="text-muted-foreground">Scan your physical card or enter details manually to create an NFC-enabled pass.</p>
+            <p className="text-muted-foreground">Customize the look and feel of your digital pass.</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-start">

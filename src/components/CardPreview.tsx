@@ -2,36 +2,63 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Smartphone, Wifi, Zap } from 'lucide-react';
+import { Smartphone, Wifi, Zap, Dumbbell, ShoppingBag, Ticket, Star } from 'lucide-react';
 
 interface CardPreviewProps {
   data: {
     label: string;
     name: string;
     color: string;
+    textColor: string;
     id: string;
     type: string;
     payload?: string;
+    finish: string;
+    icon: string;
   };
 }
 
 const CardPreview = ({ data }: CardPreviewProps) => {
+  const getIcon = () => {
+    switch (data.icon) {
+      case 'dumbbell': return <Dumbbell className="w-5 h-5" />;
+      case 'shopping-bag': return <ShoppingBag className="w-5 h-5" />;
+      case 'ticket': return <Ticket className="w-5 h-5" />;
+      case 'star': return <Star className="w-5 h-5" />;
+      default: return <Star className="w-5 h-5" />;
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Live Preview</div>
       
       <motion.div 
         layout
-        className="relative w-full max-w-[340px] aspect-[1.58/1] rounded-2xl p-6 shadow-2xl overflow-hidden flex flex-col justify-between text-white"
-        style={{ backgroundColor: data.color || '#2563eb' }}
+        className="relative w-full max-w-[340px] aspect-[1.58/1] rounded-2xl p-6 shadow-2xl overflow-hidden flex flex-col justify-between transition-colors duration-500"
+        style={{ 
+          backgroundColor: data.color || '#2563eb',
+          color: data.textColor || '#ffffff'
+        }}
       >
-        {/* Gloss effect */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+        {/* Finish Effects */}
+        {data.finish === 'glossy' && (
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 via-transparent to-black/10 pointer-events-none" />
+        )}
+        {data.finish === 'metallic' && (
+          <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(110deg,transparent_20%,rgba(255,255,255,0.2)_40%,transparent_60%)] bg-[length:200%_100%] animate-shimmer pointer-events-none" />
+        )}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
         
         <div className="flex justify-between items-start relative z-10">
-          <div>
-            <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">{data.type || 'Generic Pass'}</div>
-            <div className="text-xl font-bold leading-tight">{data.label || 'My New Pass'}</div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-md">
+              {getIcon()}
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-widest opacity-70 mb-0.5">{data.type || 'Generic Pass'}</div>
+              <div className="text-lg font-bold leading-tight">{data.label || 'My New Pass'}</div>
+            </div>
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
@@ -62,12 +89,6 @@ const CardPreview = ({ data }: CardPreviewProps) => {
           <Smartphone className="w-3 h-3" />
           Optimized for iPhone & Apple Watch
         </div>
-        
-        {data.payload && (
-          <div className="text-[10px] font-mono text-primary bg-primary/5 px-3 py-1 rounded-md border border-primary/10">
-            NFC Payload: {data.payload}
-          </div>
-        )}
       </div>
     </div>
   );
