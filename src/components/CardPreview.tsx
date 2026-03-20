@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Smartphone, Wifi } from 'lucide-react';
+import { Smartphone, Wifi, Zap } from 'lucide-react';
 
 interface CardPreviewProps {
   data: {
@@ -11,6 +11,7 @@ interface CardPreviewProps {
     color: string;
     id: string;
     type: string;
+    payload?: string;
   };
 }
 
@@ -32,8 +33,15 @@ const CardPreview = ({ data }: CardPreviewProps) => {
             <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">{data.type || 'Generic Pass'}</div>
             <div className="text-xl font-bold leading-tight">{data.label || 'My New Pass'}</div>
           </div>
-          <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-            <Wifi className="w-5 h-5 rotate-90" />
+          <div className="flex flex-col items-end gap-2">
+            <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+              <Wifi className="w-5 h-5 rotate-90" />
+            </div>
+            {data.payload && (
+              <div className="bg-yellow-400/20 p-1 rounded-md backdrop-blur-sm border border-yellow-400/30">
+                <Zap className="w-3 h-3 text-yellow-400" />
+              </div>
+            )}
           </div>
         </div>
 
@@ -43,15 +51,23 @@ const CardPreview = ({ data }: CardPreviewProps) => {
             <div className="font-medium">{data.name || 'Your Name'}</div>
           </div>
           <div className="text-right">
-            <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">ID Number</div>
+            <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Serial Number</div>
             <div className="font-mono text-sm">{data.id || '•••• ••••'}</div>
           </div>
         </div>
       </motion.div>
 
-      <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted px-3 py-1.5 rounded-full">
-        <Smartphone className="w-3 h-3" />
-        Optimized for iPhone & Apple Watch
+      <div className="flex flex-col items-center gap-3">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted px-3 py-1.5 rounded-full">
+          <Smartphone className="w-3 h-3" />
+          Optimized for iPhone & Apple Watch
+        </div>
+        
+        {data.payload && (
+          <div className="text-[10px] font-mono text-primary bg-primary/5 px-3 py-1 rounded-md border border-primary/10">
+            NFC Payload: {data.payload}
+          </div>
+        )}
       </div>
     </div>
   );
