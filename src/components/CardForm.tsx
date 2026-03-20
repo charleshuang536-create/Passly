@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { showSuccess } from '@/utils/toast';
 import NFCScanner from './NFCScanner';
+import AppleColorPicker from './AppleColorPicker';
 
 interface CardFormProps {
   data: any;
@@ -51,18 +52,6 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
     newFields[index][key] = val;
     onChange('customFields', newFields);
   };
-
-  const colors = [
-    { name: 'Blue', value: '#2563eb' },
-    { name: 'Indigo', value: '#4f46e5' },
-    { name: 'Purple', value: '#9333ea' },
-    { name: 'Pink', value: '#db2777' },
-    { name: 'Red', value: '#dc2626' },
-    { name: 'Orange', value: '#ea580c' },
-    { name: 'Green', value: '#16a34a' },
-    { name: 'Black', value: '#18181b' },
-    { name: 'Slate', value: '#475569' },
-  ];
 
   const icons = [
     { id: 'dumbbell', icon: <Dumbbell className="w-4 h-4" /> },
@@ -171,20 +160,11 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
             <TabsContent value="design" className="p-6 space-y-6 mt-0">
               <div className="space-y-6">
-                <div className="grid gap-3">
-                  <Label>Primary Color</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {colors.map((c) => (
-                      <button
-                        key={c.value}
-                        type="button"
-                        onClick={() => onChange('color', c.value)}
-                        className={`w-7 h-7 rounded-full border-2 transition-all ${data.color === c.value ? 'border-primary scale-110 ring-2 ring-primary/20' : 'border-transparent hover:scale-105'}`}
-                        style={{ backgroundColor: c.value }}
-                      />
-                    ))}
-                  </div>
-                </div>
+                <AppleColorPicker 
+                  label="Primary Card Color"
+                  value={data.color}
+                  onChange={(color) => onChange('color', color)}
+                />
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
