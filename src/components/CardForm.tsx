@@ -10,7 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { 
   Wallet, ScanLine, Info, Palette, Database, 
   Dumbbell, ShoppingBag, Ticket, Star, 
-  Layout as LayoutIcon, Settings2, Plus, Trash2 
+  Layout as LayoutIcon, Settings2, Plus, Trash2, RotateCcw 
 } from 'lucide-react';
 import { showSuccess } from '@/utils/toast';
 import NFCScanner from './NFCScanner';
@@ -199,9 +199,21 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
                 <div className="space-y-4">
                   <div className="grid gap-2">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <Label>Corner Radius</Label>
-                      <span className="text-xs text-muted-foreground">{data.borderRadius}px</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">{data.borderRadius}px</span>
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6 hover:bg-primary/10 hover:text-primary" 
+                          onClick={() => onChange('borderRadius', 16)}
+                          title="Reset to default (16px)"
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                        </Button>
+                      </div>
                     </div>
                     <Slider 
                       value={[data.borderRadius]} 
@@ -211,9 +223,21 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                     />
                   </div>
                   <div className="grid gap-2">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <Label>Border Width</Label>
-                      <span className="text-xs text-muted-foreground">{data.borderWidth}px</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">{data.borderWidth}px</span>
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6 hover:bg-primary/10 hover:text-primary" 
+                          onClick={() => onChange('borderWidth', 0)}
+                          title="Reset to default (0px)"
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                        </Button>
+                      </div>
                     </div>
                     <Slider 
                       value={[data.borderWidth]} 
