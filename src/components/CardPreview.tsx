@@ -39,6 +39,10 @@ const CardPreview = ({ data }: CardPreviewProps) => {
     }
   };
 
+  const maskedSerial = data.id 
+    ? `•••• ${data.id.slice(-4)}` 
+    : '•••• ••••';
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="text-sm font-medium text-muted-foreground uppercase tracking-widest">Live Preview</div>
@@ -174,7 +178,7 @@ const CardPreview = ({ data }: CardPreviewProps) => {
                 className="text-right"
               >
                 <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Serial</div>
-                <div className="font-mono text-[10px]">{data.id || '•••• ••••'}</div>
+                <div className="font-mono text-[10px]">{maskedSerial}</div>
               </motion.div>
             )}
           </AnimatePresence>
