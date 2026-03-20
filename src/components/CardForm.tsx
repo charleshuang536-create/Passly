@@ -165,14 +165,14 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="grid gap-2 overflow-hidden"
                     >
-                      <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 space-y-2">
-                        <Label htmlFor="customType" className="text-xs text-primary font-bold uppercase tracking-wider">Custom Pass Type</Label>
+                      <div className="p-4 bg-muted/20 rounded-2xl border border-border/50 space-y-2">
+                        <Label htmlFor="customType" className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Custom Pass Type</Label>
                         <Input 
                           id="customType" 
                           placeholder="e.g. Library Card" 
                           value={data.type}
                           onChange={(e) => onChange('type', e.target.value)}
-                          className="rounded-xl bg-background border-primary/20 focus-visible:ring-primary/30"
+                          className="rounded-xl bg-muted/30 border-border/50 focus-visible:ring-primary/30"
                         />
                       </div>
                     </motion.div>
