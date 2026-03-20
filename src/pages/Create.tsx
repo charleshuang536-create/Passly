@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar';
 import CardPreview from '@/components/CardPreview';
 import CardForm from '@/components/CardForm';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wifi, QrCode, ArrowLeft, ChevronRight } from 'lucide-react';
+import { Wifi, QrCode, ArrowLeft, ChevronRight, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Create = () => {
@@ -44,7 +44,7 @@ const Create = () => {
       <Navbar />
       
       <main className="container mx-auto px-4 pt-32 pb-20">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <AnimatePresence mode="wait">
             {step === 'select' ? (
               <motion.div
@@ -53,12 +53,12 @@ const Create = () => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.98 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-2xl mx-auto text-center"
+                className="max-w-5xl mx-auto text-center"
               >
                 <h1 className="text-4xl font-bold mb-4">Choose Type</h1>
-                <p className="text-muted-foreground mb-12">Select how your digital pass will be scanned at terminals.</p>
+                <p className="text-muted-foreground mb-12">Select how your digital pass will be scanned or support the project.</p>
                 
-                <div className="grid sm:grid-cols-2 gap-6">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   <motion.button
                     whileHover={{ y: -5, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -82,7 +82,7 @@ const Create = () => {
                     whileHover={{ y: -5, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => selectTech('qr')}
-                    className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all text-left relative overflow-hidden"
+                    className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-purple-500 hover:shadow-xl hover:shadow-purple-500/5 transition-all text-left relative overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                       <QrCode className="w-32 h-32" />
@@ -94,6 +94,25 @@ const Create = () => {
                     <p className="text-sm text-muted-foreground mb-6">Visual scanning using a 2D barcode. Compatible with all optical scanners.</p>
                     <div className="flex items-center gap-2 text-purple-500 font-semibold text-sm">
                       Select QR <ChevronRight className="w-4 h-4" />
+                    </div>
+                  </motion.button>
+
+                  <motion.button
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => window.open('https://www.buymeacoffee.com', '_blank')}
+                    className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-pink-500 hover:shadow-xl hover:shadow-pink-500/5 transition-all text-left relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Heart className="w-32 h-32" />
+                    </div>
+                    <div className="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <Heart className="w-7 h-7 text-pink-500" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Support Us</h3>
+                    <p className="text-sm text-muted-foreground mb-6">Help keep this tool free and open-source. Every donation helps us grow!</p>
+                    <div className="flex items-center gap-2 text-pink-500 font-semibold text-sm">
+                      Donate Now <ChevronRight className="w-4 h-4" />
                     </div>
                   </motion.button>
                 </div>
