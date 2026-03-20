@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import CardPreview from '@/components/CardPreview';
 import CardForm from '@/components/CardForm';
+import DebugPanel from '@/components/DebugPanel';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wifi, QrCode, ArrowLeft, ChevronRight, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -42,6 +43,13 @@ const Create = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
+      <DebugPanel
+        title="Pass Debug"
+        data={{
+          step,
+          cardData,
+        }}
+      />
       
       <main className="container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-6xl mx-auto">
