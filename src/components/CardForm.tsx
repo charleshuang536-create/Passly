@@ -25,7 +25,8 @@ interface CardFormProps {
 const CardForm = ({ data, onChange }: CardFormProps) => {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const defaultTypes = ['Store Card', 'Membership', 'Event Ticket', 'Coupon'];
-  const isCustomType = !defaultTypes.includes(data.type) && data.type !== '';
+  // We allow empty string to be considered a custom type so the input stays visible
+  const isCustomType = !defaultTypes.includes(data.type);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,7 +116,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                       value={isCustomType ? "custom" : data.type} 
                       onValueChange={(v) => {
                         if (v === 'custom') {
-                          onChange('type', 'Custom Type');
+                          onChange('type', ''); // Start with empty string
                         } else {
                           onChange('type', v);
                         }
