@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Wallet, ScanLine, Info, Palette, Database, 
+  Wallet, ScanLine, Palette, Database, 
   Dumbbell, ShoppingBag, Ticket, Star, 
   Layout as LayoutIcon, Settings2, Plus, Trash2, RotateCcw 
 } from 'lucide-react';
@@ -24,8 +24,16 @@ interface CardFormProps {
 
 const CardForm = ({ data, onChange }: CardFormProps) => {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [isCustomMode, setIsCustomMode] = useState(false);
+  
   const defaultTypes = ['Store Card', 'Membership', 'Event Ticket', 'Coupon'];
-  const isCustomType = !defaultTypes.includes(data.type) && data.type !== '';
+
+  // Initialize custom mode if the initial type isn't in defaults
+  useEffect(() => {
+    if (data.type && !defaultTypes.includes(data.type) && !isCustomMode) {
+      setIsCustomMode(true);
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,13 +118,17 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="type">Pass Type</Label>
+                    <Label htmlFor="type">Pass Category</Label>
                     <Select 
-                      value={isCustomType ? "custom" : data.type} 
+                      value={isCustomMode ? "custom" : data.type} 
                       onValueChange={(v) => {
                         if (v === 'custom') {
-                          onChange('type', 'Custom Type');
+                          setIsCustomMode(true);
+                          if (defaultTypes.includes(data.type)) {
+                            onChange('type', 'Custom Pass');
+                          }
                         } else {
+                          setIsCustomMode(false);
                           onChange('type', v);
                         }
                       }}
@@ -144,22 +156,25 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                   </div>
                 </div>
 
-                <AnimatePresence>
-                  {isCustomType && (
+                <AnimatePresence initial={false}>
+                  {isCustomMode && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                      animate={{ opacity: 1, height: 'auto', marginTop: 8 }}
-                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                      initial={{ opacity: 0, height: 0, y: -10 }}
+                      animate={{ opacity: 1, height: 'auto', y: 0 }}
+                      exit={{ opacity: 0, height: 0, y: -10 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="grid gap-2 overflow-hidden"
                     >
-                      <Label htmlFor="customType">Custom Pass Type</Label>
-                      <Input 
-                        id="customType" 
-                        placeholder="e.g. Library Card" 
-                        value={data.type}
-                        onChange={(e) => onChange('type', e.target.value)}
-                        className="rounded-xl"
-                      />
+                      <div className="p-4 bg-primary/5 rounded-2xl border border-primary/10 space-y-2">
+                        <Label htmlFor="customType" className="text-xs text-primary font-bold uppercase tracking-wider">Custom Category Name</Label>
+                        <Input 
+                          id="customType" 
+                          placeholder="e.g. Library Card" 
+                          value={data.type}
+                          onChange={(e) => onChange('type', e.target.value)}
+                          className="rounded-xl bg-background border-primary/20 focus-visible:ring-primary/30"
+                        />
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
