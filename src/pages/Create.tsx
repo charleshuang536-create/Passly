@@ -8,36 +8,47 @@ import DebugPanel from '@/components/DebugPanel';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wifi, QrCode, ArrowLeft, ChevronRight, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { savePass } from '@/lib/pass-store';
+
+const initialCardData = {
+  label: '',
+  name: '',
+  color: '#2563eb',
+  textColor: '#ffffff',
+  secondaryColor: '#ffffff',
+  borderColor: '#ffffff',
+  borderWidth: 0,
+  borderRadius: 16,
+  id: '',
+  type: 'Membership',
+  payload: '',
+  qrContent: '',
+  finish: 'standard',
+  icon: 'star',
+  techType: 'nfc' as 'nfc' | 'qr',
+  layout: 'standard' as 'standard' | 'compact' | 'minimal',
+  customFields: [] as Array<{ label: string; value: string }>,
+};
 
 const Create = () => {
   const [step, setStep] = useState<'select' | 'design'>('select');
-  const [cardData, setCardData] = useState({
-    label: '',
-    name: '',
-    color: '#2563eb',
-    textColor: '#ffffff',
-    secondaryColor: '#ffffff',
-    borderColor: '#ffffff',
-    borderWidth: 0,
-    borderRadius: 16,
-    id: '',
-    type: 'Membership',
-    payload: '',
-    qrContent: '',
-    finish: 'standard',
-    icon: 'star',
-    techType: 'nfc' as 'nfc' | 'qr',
-    layout: 'standard' as 'standard' | 'compact' | 'minimal',
-    customFields: [] as Array<{ label: string; value: string }>
-  });
+  const [cardData, setCardData] = useState(initialCardData);
 
   const handleUpdate = (field: string, value: any) => {
     setCardData(prev => ({ ...prev, [field]: value }));
   };
 
   const selectTech = (type: 'nfc' | 'qr') => {
-    handleUpdate('techType', type);
+    setCardData((prev) => ({ ...prev, techType: type }));
     setStep('design');
+  };
+
+  const handleSavePass = () => {
+    savePass({
+      ...cardData,
+      label: cardData.label || 'Untitled Pass',
+      type: cardData.type || 'Custom Pass',
+    });
   };
 
   return (
@@ -155,7 +166,7 @@ const Create = () => {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12 items-start">
-                  <CardForm data={cardData} onChange={handleUpdate} />
+                  <CardForm data={cardData} onChange={handleUpdate} onSubmitPass={handleSavePass} />
 
                   <div className="sticky top-32">
                     <CardPreview data={cardData} />

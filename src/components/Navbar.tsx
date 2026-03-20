@@ -48,7 +48,7 @@ const Navbar = () => {
                     Create Pass
                   </DropdownMenuItem>
                 </Link>
-                <Link to="/create">
+                <Link to="/passes">
                   <DropdownMenuItem className="rounded-2xl px-3 py-3 font-medium">
                     <Folder className="mr-2 h-4 w-4 text-muted-foreground" />
                     My Passes
