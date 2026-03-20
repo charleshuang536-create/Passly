@@ -58,63 +58,67 @@ const Create = () => {
                 <h1 className="text-4xl font-bold mb-4">Choose Type</h1>
                 <p className="text-muted-foreground mb-12">Select how your digital pass will be scanned or support the project.</p>
                 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <motion.button
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => selectTech('nfc')}
-                    className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all text-left relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Wifi className="w-32 h-32" />
-                    </div>
-                    <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Wifi className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">NFC Pass</h3>
-                    <p className="text-sm text-muted-foreground mb-6">Contactless scanning using Apple VAS protocol. Best for gym and loyalty cards.</p>
-                    <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-                      Select NFC <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </motion.button>
+                <div className="max-w-4xl mx-auto space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <motion.button
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => selectTech('nfc')}
+                      className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all text-left relative overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <Wifi className="w-32 h-32" />
+                      </div>
+                      <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <Wifi className="w-7 h-7 text-primary" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">NFC Pass</h3>
+                      <p className="text-sm text-muted-foreground mb-6">Contactless scanning using Apple VAS protocol. Best for gym and loyalty cards.</p>
+                      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                        Select NFC <ChevronRight className="w-4 h-4" />
+                      </div>
+                    </motion.button>
 
-                  <motion.button
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => selectTech('qr')}
-                    className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-purple-500 hover:shadow-xl hover:shadow-purple-500/5 transition-all text-left relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <QrCode className="w-32 h-32" />
-                    </div>
-                    <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <QrCode className="w-7 h-7 text-purple-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">QR Code</h3>
-                    <p className="text-sm text-muted-foreground mb-6">Visual scanning using a 2D barcode. Compatible with all optical scanners.</p>
-                    <div className="flex items-center gap-2 text-purple-500 font-semibold text-sm">
-                      Select QR <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </motion.button>
+                    <motion.button
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => selectTech('qr')}
+                      className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-purple-500 hover:shadow-xl hover:shadow-purple-500/5 transition-all text-left relative overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <QrCode className="w-32 h-32" />
+                      </div>
+                      <div className="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <QrCode className="w-7 h-7 text-purple-500" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">QR Code</h3>
+                      <p className="text-sm text-muted-foreground mb-6">Visual scanning using a 2D barcode. Compatible with all optical scanners.</p>
+                      <div className="flex items-center gap-2 text-purple-500 font-semibold text-sm">
+                        Select QR <ChevronRight className="w-4 h-4" />
+                      </div>
+                    </motion.button>
+                  </div>
 
-                  <motion.button
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => window.open('https://www.buymeacoffee.com', '_blank')}
-                    className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-pink-500 hover:shadow-xl hover:shadow-pink-500/5 transition-all text-left relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                      <Heart className="w-32 h-32" />
-                    </div>
-                    <div className="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Heart className="w-7 h-7 text-pink-500" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">Support Us</h3>
-                    <p className="text-sm text-muted-foreground mb-6">Help keep this tool free and open-source. Every donation helps us grow!</p>
-                    <div className="flex items-center gap-2 text-pink-500 font-semibold text-sm">
-                      Donate Now <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </motion.button>
+                  <div className="flex justify-center">
+                    <motion.button
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => window.open('https://www.buymeacoffee.com', '_blank')}
+                      className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-pink-500 hover:shadow-xl hover:shadow-pink-500/5 transition-all text-left relative overflow-hidden max-w-md w-full"
+                    >
+                      <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <Heart className="w-32 h-32" />
+                      </div>
+                      <div className="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <Heart className="w-7 h-7 text-pink-500" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">Support Us</h3>
+                      <p className="text-sm text-muted-foreground mb-6">Help keep this tool free and open-source. Every donation helps us grow!</p>
+                      <div className="flex items-center gap-2 text-pink-500 font-semibold text-sm">
+                        Donate Now <ChevronRight className="w-4 h-4" />
+                      </div>
+                    </motion.button>
+                  </div>
                 </div>
               </motion.div>
             ) : (
