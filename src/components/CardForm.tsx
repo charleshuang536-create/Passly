@@ -147,10 +147,10 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                 <AnimatePresence>
                   {isCustomType && (
                     <motion.div
-                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                      animate={{ opacity: 1, height: 'auto', marginTop: 8 }}
-                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                      className="flex flex-col items-center gap-2 overflow-hidden"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="flex flex-col items-center gap-2 overflow-hidden py-4"
                     >
                       <Label htmlFor="customType">Custom Pass Type</Label>
                       <Input 
