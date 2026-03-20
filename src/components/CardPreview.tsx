@@ -45,6 +45,12 @@ const CardPreview = ({ data }: CardPreviewProps) => {
       
       <motion.div 
         layout
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 30,
+          layout: { duration: 0.4 }
+        }}
         className={cn(
           "relative w-full max-w-[340px] shadow-2xl overflow-hidden flex flex-col justify-between transition-all duration-500",
           data.layout === 'standard' ? 'aspect-[1.58/1] p-6' : 
@@ -61,39 +67,52 @@ const CardPreview = ({ data }: CardPreviewProps) => {
       >
         {/* Finish Effects */}
         {data.finish === 'glossy' && (
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 via-transparent to-black/10 pointer-events-none" />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 via-transparent to-black/10 pointer-events-none" 
+          />
         )}
         {data.finish === 'metallic' && (
-          <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(110deg,transparent_20%,rgba(255,255,255,0.2)_40%,transparent_60%)] bg-[length:200%_100%] animate-shimmer pointer-events-none" />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(110deg,transparent_20%,rgba(255,255,255,0.2)_40%,transparent_60%)] bg-[length:200%_100%] animate-shimmer pointer-events-none" 
+          />
         )}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
         
-        <div className={cn("flex justify-between items-start relative z-10", data.layout === 'minimal' && 'flex-col gap-4')}>
-          <div className="flex items-center gap-3">
-            <div 
+        <motion.div layout className={cn("flex justify-between items-start relative z-10", data.layout === 'minimal' && 'flex-col gap-4')}>
+          <motion.div layout className="flex items-center gap-3">
+            <motion.div 
+              layout
               className="p-2 rounded-lg backdrop-blur-md"
               style={{ backgroundColor: `${data.secondaryColor}40` || 'rgba(255,255,255,0.2)' }}
             >
               {getIcon()}
-            </div>
-            <div>
+            </motion.div>
+            <motion.div layout>
               <div className="text-[10px] uppercase tracking-widest opacity-70 mb-0.5">{data.type || 'Generic Pass'}</div>
               <div className={cn("font-bold leading-tight", data.layout === 'compact' ? 'text-base' : 'text-lg')}>
                 {data.label || 'My New Pass'}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
-          <div className={cn("flex items-center gap-2", data.layout === 'minimal' ? 'w-full justify-between' : 'flex-col items-end')}>
+          <motion.div layout className={cn("flex items-center gap-2", data.layout === 'minimal' ? 'w-full justify-between' : 'flex-col items-end')}>
             {data.techType === 'nfc' ? (
               <div className="flex items-center gap-2">
                 <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
                   <Wifi className="w-4 h-4 rotate-90" />
                 </div>
                 {data.payload && (
-                  <div className="bg-yellow-400/20 p-1 rounded-md backdrop-blur-sm border border-yellow-400/30">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="bg-yellow-400/20 p-1 rounded-md backdrop-blur-sm border border-yellow-400/30"
+                  >
                     <Zap className="w-3 h-3 text-yellow-400" />
-                  </div>
+                  </motion.div>
                 )}
               </div>
             ) : (
@@ -101,34 +120,42 @@ const CardPreview = ({ data }: CardPreviewProps) => {
                 <QrCode className="w-4 h-4" />
               </div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Custom Fields Area */}
-        {data.layout === 'standard' && data.customFields.length > 0 && (
-          <div className="grid grid-cols-2 gap-2 relative z-10 my-2">
-            {data.customFields.slice(0, 2).map((field, i) => (
-              <div key={i} className="overflow-hidden">
-                <div className="text-[8px] uppercase tracking-widest opacity-60">{field.label}</div>
-                <div className="text-[10px] font-semibold truncate">{field.value}</div>
-              </div>
-            ))}
-          </div>
-        )}
+        <AnimatePresence>
+          {data.layout === 'standard' && data.customFields.length > 0 && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="grid grid-cols-2 gap-2 relative z-10 my-2"
+            >
+              {data.customFields.slice(0, 2).map((field, i) => (
+                <div key={i} className="overflow-hidden">
+                  <div className="text-[8px] uppercase tracking-widest opacity-60">{field.label}</div>
+                  <div className="text-[10px] font-semibold truncate">{field.value}</div>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        <div className="flex justify-between items-end relative z-10">
-          <div className="flex-1">
+        <motion.div layout className="flex justify-between items-end relative z-10">
+          <motion.div layout className="flex-1">
             <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Card Holder</div>
             <div className="font-medium truncate max-w-[120px]">{data.name || 'Your Name'}</div>
-          </div>
+          </motion.div>
           
           <AnimatePresence mode="wait">
             {data.techType === 'qr' ? (
               <motion.div 
                 key="qr"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className="bg-white p-1 rounded-lg shadow-lg"
               >
                 <QRCodeSVG 
@@ -141,9 +168,9 @@ const CardPreview = ({ data }: CardPreviewProps) => {
             ) : (
               <motion.div 
                 key="serial"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
                 className="text-right"
               >
                 <div className="text-[10px] uppercase tracking-widest opacity-70 mb-1">Serial</div>
@@ -151,15 +178,20 @@ const CardPreview = ({ data }: CardPreviewProps) => {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </motion.div>
 
-      <div className="flex flex-col items-center gap-3">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="flex flex-col items-center gap-3"
+      >
         <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted px-3 py-1.5 rounded-full">
           <Smartphone className="w-3 h-3" />
           Optimized for iPhone & Apple Watch
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

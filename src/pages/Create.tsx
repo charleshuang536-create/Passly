@@ -49,16 +49,19 @@ const Create = () => {
             {step === 'select' ? (
               <motion.div
                 key="select"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="max-w-2xl mx-auto text-center"
               >
                 <h1 className="text-4xl font-bold mb-4">Choose Technology</h1>
                 <p className="text-muted-foreground mb-12">Select how your digital pass will be scanned at terminals.</p>
                 
                 <div className="grid sm:grid-cols-2 gap-6">
-                  <button
+                  <motion.button
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => selectTech('nfc')}
                     className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all text-left relative overflow-hidden"
                   >
@@ -73,9 +76,11 @@ const Create = () => {
                     <div className="flex items-center gap-2 text-primary font-semibold text-sm">
                       Select NFC <ChevronRight className="w-4 h-4" />
                     </div>
-                  </button>
+                  </motion.button>
 
-                  <button
+                  <motion.button
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => selectTech('qr')}
                     className="group p-8 bg-card rounded-[2.5rem] border-2 border-border hover:border-primary hover:shadow-xl hover:shadow-primary/5 transition-all text-left relative overflow-hidden"
                   >
@@ -90,22 +95,23 @@ const Create = () => {
                     <div className="flex items-center gap-2 text-purple-500 font-semibold text-sm">
                       Select QR <ChevronRight className="w-4 h-4" />
                     </div>
-                  </button>
+                  </motion.button>
                 </div>
               </motion.div>
             ) : (
               <motion.div
                 key="design"
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                exit={{ opacity: 0, x: -30 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
                   <div className="text-center md:text-left">
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="mb-4 -ml-2 gap-2 text-muted-foreground hover:text-foreground"
+                      className="mb-4 -ml-2 gap-2 text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => setStep('select')}
                     >
                       <ArrowLeft className="w-4 h-4" /> Back to selection
@@ -123,7 +129,12 @@ const Create = () => {
                   <div className="sticky top-32">
                     <CardPreview data={cardData} />
                     
-                    <div className="mt-12 p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="mt-12 p-6 bg-primary/5 rounded-2xl border border-primary/10"
+                    >
                       <h3 className="font-bold mb-2 flex items-center gap-2">
                         <span className="w-2 h-2 bg-primary rounded-full" />
                         {cardData.techType === 'nfc' ? 'NFC Value Added Services' : 'Optical Scanning'}
@@ -133,7 +144,7 @@ const Create = () => {
                           ? `This pass uses the Apple VAS protocol. The payload "${cardData.payload || '...'}" will be transmitted securely.`
                           : `This pass will display a high-contrast QR code containing "${cardData.qrContent || '...'}" for optical scanners.`}
                       </p>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
