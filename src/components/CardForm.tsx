@@ -20,17 +20,18 @@ import AppleColorPicker from './AppleColorPicker';
 interface CardFormProps {
   data: any;
   onChange: (field: string, value: any) => void;
+  onSubmitPass: () => void;
 }
 
-const CardForm = ({ data, onChange }: CardFormProps) => {
+const CardForm = ({ data, onChange, onSubmitPass }: CardFormProps) => {
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const defaultTypes = ['Store Card', 'Membership', 'Event Ticket', 'Coupon'];
-  // We allow empty string to be considered a custom type so the input stays visible
   const isCustomType = !defaultTypes.includes(data.type);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    showSuccess(`Pass generated with custom configuration! Ready for Apple Wallet.`);
+    onSubmitPass();
+    showSuccess('Pass saved to My Passes.');
   };
 
   const handleScanComplete = (scannedData: any) => {
@@ -116,7 +117,7 @@ const CardForm = ({ data, onChange }: CardFormProps) => {
                       value={isCustomType ? "custom" : data.type} 
                       onValueChange={(v) => {
                         if (v === 'custom') {
-                          onChange('type', ''); // Start with empty string
+                          onChange('type', '');
                         } else {
                           onChange('type', v);
                         }
